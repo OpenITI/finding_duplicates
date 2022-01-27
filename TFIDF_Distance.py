@@ -18,11 +18,17 @@ releasePath = "/Users/romanov/_OpenITI_TEMP/RELEASE/"
 folderToCompare = "/Users/romanov/_OpenITI_TEMP/RAWrabica005000-master/" 
 
 maxChunkLen = 30000 # use only this number of tokens from a file (taken from the beginning)
-maxLength = 3 # used to shorted the text before processing (speeds up analysis sugnificantly)
+maxLength = 2 # used to shorted the text before processing (speeds up analysis sugnificantly)
 loadDataTestVar = 20000 # reduce this value for testing purposes; 200 --- will take 100 from known, and 100 from unknown --- and will run fast
 minTFIDF = 0.022 # calculations are made on the vector of words with values higher than this parameter
 minCosine = 0.75 # items with distances below this will not be included in the final data;
 chunkLengths = 20000 # for chunking large matrices; no need to change this parameter
+
+###########################################################
+
+print("="*80)
+print("Analysis of files from: " + folderToCompare)
+print("="*80)
 
 ###########################################################
 # VARIABLES ###############################################
@@ -229,7 +235,7 @@ def tfidfData(varMINDF, varMAXDF, varNGRAM):
                             val = [text1, text2, str(distance), "review/true/false", metadataDic[text1]["path"], metadataDic[text2]["path"]]
                             tsvData.append("\t".join(val))
 
-        print("\tSaving results into a TSV file...")
+        print("\tSaving results into a TSV file: " + "results_%s_%dchunks.tsv" % (suffix, maxChunkLen))
         finalData = "\n".join(tsvData)
         suffix = folderToCompare.split("/")[-2]
         with open("results_%s_%dchunks.tsv" % (suffix, maxChunkLen), "w", encoding="utf8") as f9:
