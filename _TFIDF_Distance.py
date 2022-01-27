@@ -41,9 +41,7 @@ from sklearn.metrics.pairwise import cosine_similarity
 import itertools
 
 import os
-import json
 import re
-import sys
 
 ### necessary libraries
 import csv
@@ -57,21 +55,6 @@ from openiti.helper.ara import deNoise, normalize_ara_light
 ###########################################################
 
 startTime = datetime.now()
-
-"""
-1. Working with files from two folders: 1st folder --- files with URIs; 2nd folder --- unknown files
-    - the overall number of text does not really matter but keeping it under 30,000 for a run will speed things up
-2. Load the corpus (files from both folders are loaded into the same corpus)
-3. Processing through TFIDF, keeping only matches aboove certain level
-4. Results: a TSV file with three columns:
-    - text1 (known)
-    - text2 (unknown)
-    - distance
-    - review/true/false (default==review; true/false --- set manually, after review)
-    - text1Path
-    - text2Path
-5. Next: these results can be used to open texts for comparison
-"""
 
 # loading all the data
 def loaData(limitForTest=20000):
