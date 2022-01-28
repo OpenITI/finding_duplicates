@@ -218,9 +218,9 @@ def tfidfData(varMINDF, varMAXDF, varNGRAM):
                             val = [text1, text2, str(distance), "review/true/false", metadataDic[text1]["path"], metadataDic[text2]["path"]]
                             tsvData.append("\t".join(val))
 
-        print("\tSaving results into a TSV file: " + "results_%s_%dchunks.tsv" % (suffix, maxChunkLen))
         finalData = "\n".join(tsvData)
         suffix = folderToCompare.split("/")[-2]
+        print("\tSaving results into a TSV file: " + "results_%s_%dchunks.tsv" % (suffix, maxChunkLen))
         with open("results_%s_%dchunks.tsv" % (suffix, maxChunkLen), "w", encoding="utf8") as f9:
             f9.write(finalData)
 
