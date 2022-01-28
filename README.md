@@ -73,3 +73,36 @@ Total number of texts: 11339
 Time elapsed (hh:mm:ss.ms) 0:10:31.442058
 
 ```
+
+## OpenITI RAW repos:
+
+
+- https://github.com/OpenITI/RAWrabica005000.git
+- https://github.com/OpenITI/RAWrabica010000.git
+- https://github.com/OpenITI/RAWrabica015000.git
+- https://github.com/OpenITI/RAWrabica015000.git
+- https://github.com/OpenITI/RAWrabica020000.git
+- https://github.com/OpenITI/RAWrabica025000.git
+- https://github.com/OpenITI/RAWrabica030000.git
+- https://github.com/OpenITI/RAWrabica035000.git
+- https://github.com/OpenITI/RAWrabica040000.git
+- https://github.com/OpenITI/RAWrabica045000.git
+
+- https://github.com/OpenITI/raw_SHAM19Y.git
+- https://github.com/OpenITI/RAWrabicaSham19Y.git
+- https://github.com/OpenITI/raw_ShamelaY19.git
+- https://github.com/OpenITI/RAWrabicaGRAR.git
+- https://github.com/OpenITI/RAWrabica_ManchesterFiles.git
+- https://github.com/OpenITI/RAWrabicaRafed.git
+- https://github.com/OpenITI/RAWrabicaShamAY1.git
+- https://github.com/OpenITI/RAWrabicaShamAY2.git
+- https://github.com/OpenITI/RAWrabicaShamAY3.git
+
+
+
+
+
+
+
+
+
