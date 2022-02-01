@@ -13,45 +13,40 @@
 # VARIABLES ###############################################
 ###########################################################
 
-metadataFile = "/Users/romanov/_OpenITI_TEMP/_RELEASE/metadata/OpenITI_metadata_2021-2-5.csv"
-releasePath = "/Users/romanov/_OpenITI_TEMP/_RELEASE/"
+drive = "/Volumes/LaCie4Tb/"
 
-folderToCompare = "/Users/romanov/_OpenITI_TEMP/RAWrabica005000/" 
+metadataFile = drive + "/OpenITI_TEMP/_RELEASE/metadata/OpenITI_metadata_2021-2-5.csv"
+releasePath = drive + "/OpenITI_TEMP/_RELEASE/"
+
 
 foldersToCompare = [
-    "/Users/romanov/_OpenITI_TEMP/RAWrabica005000/",
-    "/Users/romanov/_OpenITI_TEMP/RAWrabica010000/",
-    #"/Users/romanov/_OpenITI_TEMP/RAWrabica015000/",
-    #"/Users/romanov/_OpenITI_TEMP/RAWrabica020000/",
-    #"/Users/romanov/_OpenITI_TEMP/RAWrabica025000/",
-    #"/Users/romanov/_OpenITI_TEMP/RAWrabica030000/",
-    #"/Users/romanov/_OpenITI_TEMP/RAWrabica035000/",
-    "/Users/romanov/_OpenITI_TEMP/RAWrabica040000/",
-    "/Users/romanov/_OpenITI_TEMP/RAWrabica045000/",
-
-    "/Users/romanov/_OpenITI_TEMP/RAWrabicaRafed/RAWrabicaRafed/",
-    "/Users/romanov/_OpenITI_TEMP/RAWrabicaSham19Y/",
-    #"/Users/romanov/_OpenITI_TEMP/raw_SHAM19Y/", # not very useful
-    "/Users/romanov/_OpenITI_TEMP/raw_ShamelaY19/raw_ShamelaY19/",
-    "/Users/romanov/_OpenITI_TEMP/RAWrabicaShamAY1/",
-    "/Users/romanov/_OpenITI_TEMP/RAWrabicaShamAY2/",
-    "/Users/romanov/_OpenITI_TEMP/RAWrabicaShamAY3/"
+    #drive + "/_OpenITI_TEMP/RAWrabica005000/",
+    #drive + "/_OpenITI_TEMP/RAWrabica010000/",
+    #drive + "/_OpenITI_TEMP/RAWrabica015000/",
+    #drive + "/_OpenITI_TEMP/RAWrabica020000/",
+    #drive + "/_OpenITI_TEMP/RAWrabica025000/",
+    #drive + "/_OpenITI_TEMP/RAWrabica030000/",
+    #drive + "/_OpenITI_TEMP/RAWrabica035000/",
+    #drive + "/_OpenITI_TEMP/RAWrabica040000/",
+    #drive + "/_OpenITI_TEMP/RAWrabica045000/",
+    #drive + "/_OpenITI_TEMP/RAWrabicaRafed/RAWrabicaRafed/",
+    #drive + "/_OpenITI_TEMP/RAWrabicaSham19Y/",
+    #drive + "/_OpenITI_TEMP/raw_ShamelaY19/raw_ShamelaY19/",
+    #drive + "/_OpenITI_TEMP/RAWrabicaShamAYtxt1/",
+    #drive + "/_OpenITI_TEMP/RAWrabicaShamAYtxt2/",
+    #drive + "/_OpenITI_TEMP/RAWrabicaShamAYtxt3/",
+    #drive + "/_OpenITI_TEMP/RAW_ABLibrary/",
+    #drive + "/_OpenITI_TEMP/RAW_Masaha/",
+    drive + "/_OpenITI_TEMP/RAW_Ghbook/"
 ]
 
 maxChunkLen = 30000 # use only this number of tokens from a file (taken from the beginning)
 maxLength = 2 # used to shorted the text before processing (speeds up analysis sugnificantly)
-loadDataTestVar = 100 # 200000 # reduce this value for testing purposes; 200 --- will take 100 from known, and 100 from unknown --- and will run fast
-minTFIDF = 0.022 # calculations are made on the vector of words with values higher than this parameter
-minCosine = 0.75 # items with distances below this will not be included in the final data;
-maxEuclidean = 500 # items with distances above this will not be included in the final data;
+loadDataTestVar = 200000 # reduce this value for testing purposes; 200 --- will take 100 from known, and 100 from unknown --- and will run fast
+minTFIDF = 0.001 # calculations are made on the vector of words with values higher than this parameter
+minCosine = 0.85 # 0.75 # items with distances below this will not be included in the final data;
+maxEuclidean = 125 # 1000 # items with distances above this will not be included in the final data;
 chunkLengths = 20000 # for chunking large matrices; no need to change this parameter
-
-
-###########################################################
-
-print("="*80)
-print("Analysis of files from: " + folderToCompare)
-print("="*80)
 
 ###########################################################
 # VARIABLES ###############################################
@@ -77,8 +72,6 @@ from openiti.helper.ara import deNoise, normalize_ara_light
 ###########################################################
 ###  functions ############################################
 ###########################################################
-
-
 
 startTime = datetime.now()
 
@@ -124,10 +117,12 @@ def loaData(folderToCompare, limitForTest=20000):
             print("\t\t%d" % counter, '\tTime passed (hh:mm:ss.ms) {}'.format(timeLoopPassed))
             timeLoopStart = datetime.now()
 
+        #print("\t", docData["path"])
         with open(docData["path"], "r", encoding="utf8") as f1:
             doc = f1.read()
 
             # cut the text - the following allows to cut the time significantly by reducing the length of text before processing
+            doc = doc.replace("  ", " ").replace("  ", " ").replace("  ", " ")
             doc = doc.split(" ")[:maxChunkLen*maxLength]
             doc = " ".join(doc)
 
@@ -158,8 +153,8 @@ def docDistance(metadataDic, docList, docIdList, folderToCompare, matrixType, di
     print("="*80)
 
     # MAIN PART: calculate tfidf for all loaded publications and distances
-    print("\tgenerating tfidf matrix...")
-    vectorizer = CountVectorizer(ngram_range=(1, 1), min_df=2, max_df=0.85, stop_words=[])
+    print("\tgenerating a distance matrix...")
+    vectorizer = CountVectorizer(ngram_range=(1, 1), min_df=2, stop_words=[]) # max_df=0.85
     countVectorized = vectorizer.fit_transform(docList)
     if matrixType == "TFIDF":
         tfidfTransformer = TfidfTransformer(smooth_idf=True, use_idf=True)
@@ -261,11 +256,13 @@ def docDistance(metadataDic, docList, docIdList, folderToCompare, matrixType, di
             #if re.search("^\d\d\d\d\w+\.\w+", column): # 
             for text1, results1 in results.items():
                 for text2, distance in results1.items():
-                    if re.search("^\d\d\d\d\w+\.\w+", text2):
+                    #print(text1, text2, distance)
+                    if re.search("-ara\d+$", text2):
                         pass
                     else:
                         if text1 != text2:
-                            #print("\t", text2, "\t", distance)
+                        #if 0 == 0:
+                            #print(text1, text2, distance)
                             val = [text1, text2, str(distance), "review/true/false"]
                             tsvData.append("\t".join(val))
 
@@ -281,10 +278,11 @@ def docDistance(metadataDic, docList, docIdList, folderToCompare, matrixType, di
 ###########################################################
 
 for folder in foldersToCompare:
-    metadataDic, docList, docIdList  = loaData(folderToCompare, loadDataTestVar)
+    metadataDic, docList, docIdList  = loaData(folder, loadDataTestVar)
+
+    docDistance(metadataDic, docList, docIdList, folder, "DD", "euclidean")
     docDistance(metadataDic, docList, docIdList, folder, "TFIDF", "cosine")
     docDistance(metadataDic, docList, docIdList, folder, "DD", "cosine")
-    docDistance(metadataDic, docList, docIdList, folder, "DD", "euclidean")
 
 timeElapsed = datetime.now() - startTime
 print('Time elapsed (hh:mm:ss.ms) {}'.format(timeElapsed))
